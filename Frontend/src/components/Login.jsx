@@ -11,7 +11,7 @@ function Login() {
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg">Login</h3>
+          <h3 className="font-bold  text-lg">Login</h3>
           <div className="mt-4 space-y-2">
             <span>Email</span>
             <br />
