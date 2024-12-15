@@ -70,6 +70,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Login() {
   const {
@@ -78,8 +80,30 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const userInfo = {
+      email: data.email,
+      password: data.password,
+    };
+    await axios
+      .post("http://localhost:4001/user/login", userInfo)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data) {
+          toast.success('Logged in successfully');
+        }
+        localStorage.setItem("Users", JSON.stringify(res.data.user));
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err);
+          toast.error("Error: " + err.response.data.message);
+        }
+      });
+  };
+  const handleCloseDialog = () => {
+    const dialog = document.getElementById("my_modal_3");
+    if (dialog) dialog.close(); // Close the dialog programmatically
   };
 
   return (
@@ -91,6 +115,7 @@ function Login() {
             {/* Close Button */}
             <Link
               to="/"
+              onClick={handleCloseDialog}
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
             >
               ✕
